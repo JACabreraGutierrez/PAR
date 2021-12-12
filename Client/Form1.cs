@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace Client
         {
             Response response = await _socketClient.ReceiveMessage<Response>();
             this.listBoxLog.Items.Add(response.ToString());
-            if (this.listBoxLog.Items.Count > 9)
+            if (this.listBoxLog.Items.Count >= (Int32.TryParse(ConfigurationManager.AppSettings["LimitMessages"], out int outLimitMessage) ? outLimitMessage : 100))
                 this.listBoxLog.Items.RemoveAt(0);
         }
     }
