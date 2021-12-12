@@ -12,9 +12,25 @@ namespace Server
 {
     public partial class Form1 : Form
     {
+        SocketServer _socketServer;
         public Form1()
         {
             InitializeComponent();
+            _socketServer = new SocketServer();
+        }
+
+        private void buttonStart_Click(object sender, EventArgs e)
+        {
+            if(this.buttonStart.Text == "Start")
+            {
+                Task.Run(() => _socketServer.Start());
+                this.buttonStart.Text = "Stop";
+            }
+            else
+            {
+                _socketServer.Stop();
+                this.buttonStart.Text = "Start";
+            }            
         }
     }
 }

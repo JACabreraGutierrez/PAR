@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StandardLibrary;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,41 @@ namespace Client
 {
     public partial class Form1 : Form
     {
+        SocketClient _socketClient;
         public Form1()
         {
             InitializeComponent();
+            _socketClient = new SocketClient();
+        }
+
+        private void buttonConnection_Click(object sender, EventArgs e)
+        {
+            if(this.buttonConnection.Text == "Connect")
+            {
+                _socketClient.Start();
+                this.buttonConnection.Text = "Disconnect";
+            }
+            else
+            {
+                _socketClient.Disconnect();
+                this.buttonConnection.Text = "Connect";
+            }            
+        }
+        private void SendMessage(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(this.textBoxMessage.Text))
+            {
+                _socketClient.SendMessage(this.textBoxMessage.Text);
+                ReceibeMessage();
+                this.textBoxMessage.Text = String.Empty;
+            }            
+        }
+        private async void ReceibeMessage()
+        {
+            Response response = await _socketClient.ReceiveMessage<Response>();
+            this.listBoxLog.Items.Add(response.ToString());
+            if (this.listBoxLog.Items.Count > 9)
+                this.listBoxLog.Items.RemoveAt(0);
         }
     }
 }
