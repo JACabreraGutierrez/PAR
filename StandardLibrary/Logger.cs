@@ -22,7 +22,7 @@ namespace StandardLibrary
         private readonly LogLevel _level;
         public Logger()
         {
-            _path = System.Reflection.Assembly.GetEntryAssembly().Location;
+            _path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             _path = System.IO.Path.Combine(_path, "Log");
             if(!System.IO.Directory.Exists(_path))
                 System.IO.Directory.CreateDirectory(_path);

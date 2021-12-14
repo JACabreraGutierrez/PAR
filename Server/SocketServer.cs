@@ -16,14 +16,15 @@ namespace Server
     {
         private Socket _socket;
         private IPEndPoint _endPoint;
-        private NetworkStream _stream;
         private CancellationTokenSource _cancelToken;
+        private ILogger _logger;
 
         internal SocketServer()
         {
             IPAddress ipAddress = IPAddress.TryParse(ConfigurationManager.AppSettings["IPAddress"], out IPAddress outIPAddress) ? outIPAddress : IPAddress.Loopback;
             int port = Int32.TryParse(ConfigurationManager.AppSettings["Port"], out int outPort) ? outPort : 8500;
             _endPoint = new IPEndPoint(ipAddress, port);
+            _logger = new Logger();
         }
         internal void Start()
         {
@@ -62,13 +63,19 @@ namespace Server
 
                         if (bytesRead == 0)
                             break;
-
+                        
+                        WriteLog(buffer);
                         Response response = ResponseBuilder.CreateResponse(buffer);
                         byte[] byteResponse = ResponseBuilder.Encode(response);
                         await stream.WriteAsync(byteResponse, 0, byteResponse.Length).ConfigureAwait(false);
                     } while (true);
                 }                    
             } while(true);
+        }
+
+        private void WriteLog(byte[] log)
+        {
+            _logger.Info(System.Text.Encoding.UTF8.GetString(log));
         }
     }
 }
