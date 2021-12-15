@@ -32,7 +32,7 @@ namespace StandardLibrary
             {
                 receivedDate = DateTime.Now,
                 messageLength = message.Length,
-                secondCharacter = message.Substring(1, 1),
+                secondCharacter = (message.Length >= 2) ? message.Substring(1, 1) : String.Empty,
                 messageContainCapital = message.Where(c => Char.IsUpper(c)).Count() > 0,
                 messageCapitalCount = message.Where(c => Char.IsUpper(c)).Count(),
                 messageContainNumber = message.Where(c => Char.IsNumber(c)).Count() > 0,
