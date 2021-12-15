@@ -36,7 +36,7 @@ namespace StandardLibrary
                 messageContainCapital = message.Where(c => Char.IsUpper(c)).Count() > 0,
                 messageCapitalCount = message.Where(c => Char.IsUpper(c)).Count(),
                 messageContainNumber = message.Where(c => Char.IsNumber(c)).Count() > 0,
-                messageNumberList = message.Where(c => Char.IsNumber(c)).Select(c => Convert.ToInt32(c)).ToArray(),
+                messageNumberList = message.Where(c => Char.IsNumber(c)).Select(c => Convert.ToInt32(c)).OrderBy(i => i).ToList<int>(),
                 message = message
             };
         }

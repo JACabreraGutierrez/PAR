@@ -12,21 +12,21 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    internal class SocketServer
+    public class SocketServer
     {
         private Socket _socket;
         private IPEndPoint _endPoint;
         private CancellationTokenSource _cancelToken;
         private ILogger _logger;
 
-        internal SocketServer()
+        public SocketServer()
         {
             IPAddress ipAddress = IPAddress.TryParse(ConfigurationManager.AppSettings["IPAddress"], out IPAddress outIPAddress) ? outIPAddress : IPAddress.Loopback;
             int port = Int32.TryParse(ConfigurationManager.AppSettings["Port"], out int outPort) ? outPort : 8500;
             _endPoint = new IPEndPoint(ipAddress, port);
             _logger = new Logger();
         }
-        internal void Start()
+        public void Start()
         {
             int backlog = Int32.TryParse(ConfigurationManager.AppSettings["Backlog"], out int outBacklog) ? outBacklog : 1024;
             _socket = new Socket(_endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -37,7 +37,7 @@ namespace Server
             Task.Run(() => ProcessRequest(_socket), _cancelToken.Token);
         }
 
-        internal void Stop()
+        public void Stop()
         {
             _cancelToken.Token.Register(() => Console.WriteLine("stopping ..."));
             _socket.Close();
@@ -56,9 +56,9 @@ namespace Server
 
                 using (var stream = new NetworkStream(clientSocket, true))
                 {
-                    var buffer = new byte[1024];
                     do
                     {
+                        var buffer = new byte[1024];
                         int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
 
                         if (bytesRead == 0)

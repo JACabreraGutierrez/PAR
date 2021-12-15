@@ -11,37 +11,37 @@ using System.Timers;
 
 namespace Client
 {
-    internal class SocketClient
+    public class SocketClient
     {
         private IPEndPoint _endPoint;
         private Socket _socket;
         private NetworkStream _stream;
 
-        internal SocketClient()
+        public SocketClient()
         {
             var ipAddress = IPAddress.TryParse(ConfigurationManager.AppSettings["IPAddress"], out IPAddress outIpAddress) ? outIpAddress : IPAddress.Loopback;
             var port = Int32.TryParse(ConfigurationManager.AppSettings["Port"], out int outPort) ? outPort : 8500;
             _endPoint = new IPEndPoint(ipAddress, port);
         }
 
-        internal void Start()
+        public void Start()
         {
             _socket = new Socket(_endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             _socket.Connect(_endPoint);
             _stream = new NetworkStream(_socket, true);
         }
 
-        internal async void SendMessage(string message)
+        public async void SendMessage(string message)
         {
             byte[] buffer  = System.Text.Encoding.UTF8.GetBytes(message);
             await _stream.WriteAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
         }
-        internal async Task<T> ReceiveMessage<T>()
+        public async Task<T> ReceiveMessage<T>()
         {
             string content = await ReadAsync();
             return Decoder<T>(content);
         }
-        internal void Disconnect()
+        public void Disconnect()
         {
             _socket.Disconnect(true);
             _socket.Dispose();

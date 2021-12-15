@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.listBoxLog = new System.Windows.Forms.ListBox();
-            this.textBoxStatus = new System.Windows.Forms.TextBox();
-            this.labelStatus = new System.Windows.Forms.Label();
             this.labelLog = new System.Windows.Forms.Label();
             this.buttonConnection = new System.Windows.Forms.Button();
             this.textBoxMessage = new System.Windows.Forms.TextBox();
@@ -45,22 +43,6 @@
             this.listBoxLog.Name = "listBoxLog";
             this.listBoxLog.Size = new System.Drawing.Size(730, 173);
             this.listBoxLog.TabIndex = 0;
-            // 
-            // textBoxStatus
-            // 
-            this.textBoxStatus.Location = new System.Drawing.Point(34, 38);
-            this.textBoxStatus.Name = "textBoxStatus";
-            this.textBoxStatus.Size = new System.Drawing.Size(100, 20);
-            this.textBoxStatus.TabIndex = 1;
-            // 
-            // labelStatus
-            // 
-            this.labelStatus.AutoSize = true;
-            this.labelStatus.Location = new System.Drawing.Point(34, 19);
-            this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(77, 13);
-            this.labelStatus.TabIndex = 2;
-            this.labelStatus.Text = "Service status:";
             // 
             // labelLog
             // 
@@ -117,11 +99,11 @@
             this.Controls.Add(this.textBoxMessage);
             this.Controls.Add(this.buttonConnection);
             this.Controls.Add(this.labelLog);
-            this.Controls.Add(this.labelStatus);
-            this.Controls.Add(this.textBoxStatus);
             this.Controls.Add(this.listBoxLog);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Client";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -130,8 +112,6 @@
         #endregion
 
         private System.Windows.Forms.ListBox listBoxLog;
-        private System.Windows.Forms.TextBox textBoxStatus;
-        private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.Label labelLog;
         private System.Windows.Forms.Button buttonConnection;
         private System.Windows.Forms.TextBox textBoxMessage;

@@ -33,7 +33,7 @@
             // 
             // buttonStart
             // 
-            this.buttonStart.Location = new System.Drawing.Point(669, 45);
+            this.buttonStart.Location = new System.Drawing.Point(76, 39);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(75, 23);
             this.buttonStart.TabIndex = 0;
@@ -45,10 +45,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(221, 102);
             this.Controls.Add(this.buttonStart);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Server";
             this.ResumeLayout(false);
 
         }

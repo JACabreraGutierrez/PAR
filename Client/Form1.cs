@@ -66,8 +66,6 @@ namespace Client
         }
         private static async void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e, SocketClient client)
         {
-            //form.textBoxMessage.Text = "Keep alive";
-            //form.SendMessage(source, e);
             client.SendMessage("Keep alive");
             Response response = await client.ReceiveMessage<Response>();
         }
