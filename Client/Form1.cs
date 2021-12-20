@@ -27,14 +27,32 @@ namespace Client
         {
             if(this.buttonConnection.Text == "Connect")
             {
-                _socketClient.Start();
-                SetTimer();
-                this.buttonConnection.Text = "Disconnect";
+                try
+                {
+                    _socketClient.Start();
+                    SetTimer();
+                    this.buttonConnection.Text = "Disconnect";
+                    this.buttonSend.Enabled = true;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error to connect to the server", "Communication error");
+                    this.buttonConnection.Text = "Connect";
+                    this.buttonSend.Enabled = false;
+                }
             }
             else
             {
-                _socketClient.Disconnect();
-                this.buttonConnection.Text = "Connect";
+                try
+                {
+                    _socketClient.Disconnect();
+                    this.buttonConnection.Text = "Connect";
+                    this.buttonSend.Enabled = false;
+                }catch (Exception)
+                {
+                    this.buttonConnection.Text = "Disconnect";
+                    this.buttonSend.Enabled = true;
+                }
                 _timer?.Dispose();
             }            
         }
@@ -42,10 +60,20 @@ namespace Client
         {
             if (!string.IsNullOrEmpty(this.textBoxMessage.Text))
             {
-                _socketClient.SendMessage(this.textBoxMessage.Text);
+                _timer?.Stop();
+                try
+                {
+                    _socketClient.SendMessage(this.textBoxMessage.Text);
+                }catch (Exception)
+                {
+                    _timer?.Start();
+                    MessageBox.Show("Error to send message", "Communication error");
+                    return;
+                }
                 ReceibeMessage();
                 this.textBoxMessage.Text = String.Empty;
                 _timer.Interval = 5000;
+                _timer?.Start();
             }            
         }
         private async void ReceibeMessage()
@@ -58,11 +86,18 @@ namespace Client
 
         private void SetTimer()
         {
-            _timer = new System.Timers.Timer();
-            _timer.Interval = 5000;
-            _timer.AutoReset = true;
-            _timer.Enabled = true;
-            _timer.Elapsed += (sender, e) => OnTimedEvent(sender, e, _socketClient);
+            try
+            {
+                _timer = new System.Timers.Timer();
+                _timer.Interval = 5000;
+                _timer.AutoReset = true;
+                _timer.Enabled = true;
+                _timer.Elapsed += (sender, e) => OnTimedEvent(sender, e, _socketClient);
+            }
+            catch (Exception)
+            {
+                _timer = null;
+            }
         }
         private static async void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e, SocketClient client)
         {

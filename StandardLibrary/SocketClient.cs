@@ -49,19 +49,22 @@ namespace Client
         private async Task<string> ReadAsync()
         {
             string result = string.Empty;
-            
-            var buffer = new byte[1024];
-            using(MemoryStream ms = new MemoryStream())
+
+            try
             {
-                int numBytesRead = 0;
-                do
+                var buffer = new byte[1024];
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    int previusNumBytes = numBytesRead;
-                    numBytesRead = _stream.Read(buffer, numBytesRead, buffer.Length);
-                    ms.Write(buffer, previusNumBytes, numBytesRead);
-                }while(numBytesRead == buffer.Length);
-                result = System.Text.Encoding.UTF8.GetString(ms.ToArray(), 0, (int)ms.Length);
-            }
+                    int numBytesRead = 0;
+                    do
+                    {
+                        int previusNumBytes = numBytesRead;
+                        numBytesRead = _stream.Read(buffer, numBytesRead, buffer.Length);
+                        ms.Write(buffer, previusNumBytes, numBytesRead);
+                    } while (numBytesRead == buffer.Length);
+                    result = System.Text.Encoding.UTF8.GetString(ms.ToArray(), 0, (int)ms.Length);
+                }
+            }catch (Exception) { }
 
             return result;
         }

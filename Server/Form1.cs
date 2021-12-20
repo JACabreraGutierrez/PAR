@@ -23,8 +23,15 @@ namespace Server
         {
             if(this.buttonStart.Text == "Start")
             {
-                Task.Run(() => _socketServer.Start());
-                this.buttonStart.Text = "Stop";
+                try
+                {
+                    Task.Run(() => _socketServer.Start());
+                    this.buttonStart.Text = "Stop";
+                }catch (Exception)
+                {
+                    this.buttonStart.Text = "Start";
+                    MessageBox.Show("Error to start service", "Service error");
+                }
             }
             else
             {

@@ -59,7 +59,15 @@ namespace Server
                     do
                     {
                         var buffer = new byte[1024];
-                        int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
+                        int bytesRead;
+                        try
+                        {
+                            bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
+                        }catch (Exception e)
+                        {
+                            bytesRead = 0;
+                            _logger.Error(e.ToString());
+                        }
 
                         if (bytesRead == 0)
                             break;
@@ -67,7 +75,13 @@ namespace Server
                         WriteLog(buffer);
                         Response response = ResponseBuilder.CreateResponse(buffer);
                         byte[] byteResponse = ResponseBuilder.Encode(response);
-                        await stream.WriteAsync(byteResponse, 0, byteResponse.Length).ConfigureAwait(false);
+                        try
+                        {
+                            await stream.WriteAsync(byteResponse, 0, byteResponse.Length).ConfigureAwait(false);
+                        }catch(Exception e)
+                        {
+                            _logger.Error(e.ToString());
+                        }
                     } while (true);
                 }                    
             } while(true);

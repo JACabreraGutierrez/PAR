@@ -52,7 +52,7 @@ namespace StandardLibrary
 
         private void WriteLog(LogLevel level, string message)
         {
-            string newLine = $"{DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss")} -> {level.ToString()}: {message}";
+            string newLine = $"{DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss")} -> {level.ToString()}: {message.Replace("\0", "")}";
             if((int)_level <= (int)level)
             {
                 string pathLog = System.IO.Path.Combine(_path, _fileLog);
@@ -73,7 +73,7 @@ namespace StandardLibrary
                 }
                 else
                 {
-                    System.IO.File.WriteAllText(pathLog, newLine);
+                    System.IO.File.AppendAllLines(pathLog, new string[] { newLine });
                 }
             }
         }
